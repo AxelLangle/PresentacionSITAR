@@ -26,7 +26,7 @@ export default function Slide2() {
         <div className="absolute inset-0 bg-black/70 z-10" />
         <div 
           className="absolute inset-0 bg-cover bg-center grayscale" 
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1000')" }}
+          style={{ backgroundImage: "url('/Operador_escala_grises.png')" }}
         />
       </motion.div>
 
