@@ -4,6 +4,7 @@ import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Environment, Float, Html } from '@react-three/drei';
 import * as THREE from 'three';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 // Componente simulando el modelo de PCB
 function PCBModel() {
@@ -47,11 +48,12 @@ function PCBModel() {
 }
 
 export default function Slide4() {
+  const { t } = useLanguage();
   return (
     <div className="h-screen w-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-900 to-black relative flex items-center justify-center">
       <div className="absolute top-16 left-16 z-10 pointer-events-none">
-        <h2 className="text-4xl font-bold text-white tracking-tight">Hardware / PCB</h2>
-        <p className="text-gray-400 mt-2 text-lg">Modelo interactivo del diseño en KiCad</p>
+        <h2 className="text-4xl font-bold text-white tracking-tight">{t.hardware}</h2>
+        <p className="text-gray-400 mt-2 text-lg">{t.hardwareDesc}</p>
       </div>
       
       <div className="w-full h-full cursor-grab active:cursor-grabbing">
