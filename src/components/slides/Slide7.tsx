@@ -12,8 +12,10 @@ import {
 } from 'recharts';
 import { AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Slide7() {
+  const { t } = useLanguage();
   const [data, setData] = useState<{ time: string; flow: number }[]>([]);
   const [anomaly, setAnomaly] = useState(false);
 
@@ -44,8 +46,8 @@ export default function Slide7() {
   return (
     <div className={`h-screen w-full flex items-center justify-center transition-colors duration-500 ${anomaly ? 'bg-red-500/20' : 'bg-slate-950'}`}>
       <div className="absolute top-16 left-16 z-10 pointer-events-none">
-        <h2 className="text-4xl font-bold text-white tracking-tight">Dashboard Live</h2>
-        <p className="text-gray-400 mt-2 text-lg">Telemetría en tiempo real (Caudal de agua)</p>
+        <h2 className="text-4xl font-bold text-white tracking-tight">{t.dashboard}</h2>
+        <p className="text-gray-400 mt-2 text-lg">{t.dashboardDesc}</p>
       </div>
 
       {/* Mockup Laptop Container */}
@@ -83,7 +85,7 @@ export default function Slide7() {
               className="absolute top-4 right-4 flex items-center gap-2 text-red-500 bg-red-950/50 px-4 py-2 rounded-full border border-red-500 animate-pulse"
             >
               <AlertCircle size={20} />
-              <span className="font-bold">¡ALERTA DE FLUJO!</span>
+              <span className="font-bold">{t.flowAlert}</span>
             </motion.div>
           )}
         </div>
@@ -97,7 +99,7 @@ export default function Slide7() {
             : 'bg-red-600 text-white hover:bg-red-700 hover:scale-105'
         }`}
       >
-        {anomaly ? 'Restaurar Flujo' : 'Simular Anomalía'}
+        {anomaly ? t.restoreFlow : t.simulateAnomaly}
       </button>
     </div>
   );
