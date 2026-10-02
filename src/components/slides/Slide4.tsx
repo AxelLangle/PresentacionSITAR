@@ -12,13 +12,11 @@ function PCBModel({ showTooltips }: { showTooltips: boolean }) {
   const { scene } = useGLTF('/pcb.glb');
   const groupRef = useRef<THREE.Group>(null);
   
-  // Posiciones predeterminadas provisionales
-  // Instrucción: Cuando hagas clic en el modelo 3D en el navegador, 
-  // la consola te dará las coordenadas exactas. Luego puedes pasármelas para ajustarlas.
+  // Posiciones exactas recolectadas
   const tooltips = [
-    { id: 1, label: "ATtiny1614", position: [-1, 0.5, 0] as [number, number, number] },
-    { id: 2, label: "SIM800L EVB", position: [1, 0.5, -0.5] as [number, number, number] },
-    { id: 3, label: "Modbus RS485", position: [1, 0.5, 0.8] as [number, number, number] }
+    { id: 1, label: "ATtiny1614", position: [236.25, 118.84, 7.95] as [number, number, number] },
+    { id: 2, label: "SIM800L EVB", position: [200.16, 123.52, 3.53] as [number, number, number] },
+    { id: 3, label: "Modbus RS485", position: [227.93, 76.87, 2.35] as [number, number, number] }
   ];
 
   useFrame((state) => {
@@ -30,7 +28,6 @@ function PCBModel({ showTooltips }: { showTooltips: boolean }) {
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
-    // Esto te imprimirá en la consola las coordenadas exactas de dónde diste clic
     console.log(`Coordenadas del clic -> x: ${e.point.x.toFixed(3)}, y: ${e.point.y.toFixed(3)}, z: ${e.point.z.toFixed(3)}`);
   };
 
@@ -58,7 +55,10 @@ export default function Slide4() {
   const [showTooltips, setShowTooltips] = useState(false);
 
   return (
-    <div className="h-screen w-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-900 to-black relative flex items-center justify-center">
+    <div 
+      className="h-screen w-full relative flex items-center justify-center"
+      style={{ backgroundImage: 'radial-gradient(ellipse at center, #111827, #000000)' }}
+    >
       <div className="absolute top-16 left-16 z-10 pointer-events-none">
         <h2 className="text-4xl font-bold text-white tracking-tight">{t.hardware}</h2>
         <p className="text-gray-400 mt-2 text-lg">{t.hardwareDesc}</p>

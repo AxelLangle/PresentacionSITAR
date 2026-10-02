@@ -30,7 +30,8 @@ export default function Slide1() {
         />
         {/* Pulsación lenta tipo onda */}
         <motion.div 
-          className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-slate-950/80 to-slate-950"
+          className="absolute inset-0"
+          style={{ backgroundImage: 'radial-gradient(ellipse at center, rgba(30, 58, 138, 0.1), rgba(2, 6, 23, 0.8), rgba(2, 6, 23, 1))' }}
           animate={{
             scale: [1, 1.05, 1],
             opacity: [0.8, 1, 0.8]
