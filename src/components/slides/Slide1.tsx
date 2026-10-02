@@ -21,7 +21,8 @@ export default function Slide1() {
       {/* Fondo de agua sutil reaccionando al ratón */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div 
-          className="absolute w-[800px] h-[800px] rounded-full bg-blue-900/30 blur-[120px] mix-blend-screen"
+          className="absolute rounded-full bg-blue-900/30 mix-blend-screen"
+          style={{ width: '800px', height: '800px', filter: 'blur(120px)' }}
           animate={{
             x: mousePosition.x - 400,
             y: mousePosition.y - 400,

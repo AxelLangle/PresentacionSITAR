@@ -51,7 +51,10 @@ export default function Slide7() {
       </div>
 
       {/* Mockup Laptop Container */}
-      <div className="w-[800px] h-[500px] bg-slate-900 border-[12px] border-slate-800 rounded-2xl relative shadow-2xl flex flex-col overflow-hidden">
+      <div 
+        className="bg-slate-900 border-slate-800 rounded-2xl relative shadow-2xl flex flex-col overflow-hidden"
+        style={{ width: '800px', height: '500px', borderWidth: '12px' }}
+      >
         {/* Top bar of laptop */}
         <div className="h-6 w-full bg-slate-950 flex items-center justify-center">
            <div className="w-2 h-2 rounded-full bg-gray-600"></div>

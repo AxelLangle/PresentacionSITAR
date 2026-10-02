@@ -33,8 +33,8 @@ export default function Slide3() {
             : { scale: 0, opacity: 0 }
         }
         transition={{ duration: 1.5, ease: "easeIn" }}
-        className="absolute w-3 h-4 rounded-full bg-blue-300 shadow-[0_0_20px_rgba(147,197,253,1)]"
-        style={{ originY: 1, borderRadius: '50% 50% 50% 50% / 60% 60% 40% 40%' }}
+        className="absolute w-3 h-4 rounded-full bg-blue-300"
+        style={{ originY: 1, borderRadius: '50% 50% 50% 50% / 60% 60% 40% 40%', boxShadow: '0 0 20px rgba(147,197,253,1)' }}
       />
 
       {/* Etapa 1: Constelación */}
@@ -68,9 +68,10 @@ export default function Slide3() {
                <motion.div 
                  animate={{ y: [-5, 5, -5] }}
                  transition={{ repeat: Infinity, duration: 3, ease: "easeInOut", delay: node.delay }}
-                 className="w-16 h-16 rounded-full bg-slate-900/50 border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.2)] backdrop-blur-sm flex items-center justify-center"
+                 className="w-16 h-16 rounded-full bg-slate-900/50 border border-blue-500/30 backdrop-blur-sm flex items-center justify-center"
+                 style={{ boxShadow: '0 0 30px rgba(59,130,246,0.2)' }}
                >
-                 <div className="w-2 h-2 rounded-full bg-blue-300 shadow-[0_0_15px_rgba(147,197,253,1)]" />
+                 <div className="w-2 h-2 rounded-full bg-blue-300" style={{ boxShadow: '0 0 15px rgba(147,197,253,1)' }} />
                </motion.div>
                <motion.span 
                  initial={{ opacity: 0, y: 10 }}
@@ -84,7 +85,7 @@ export default function Slide3() {
            ))}
            
            {/* Líneas conectoras */}
-           <svg className="absolute inset-0 w-[600px] h-[400px] pointer-events-none" style={{ transform: 'translate(-50%, -50%)', left: '50%', top: '50%' }}>
+           <svg className="absolute inset-0 pointer-events-none" style={{ width: '600px', height: '400px', transform: 'translate(-50%, -50%)', left: '50%', top: '50%' }}>
              <motion.line 
                initial={{ pathLength: 0, opacity: 0 }}
                animate={{ pathLength: 1, opacity: 0.2 }}
