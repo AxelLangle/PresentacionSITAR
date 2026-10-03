@@ -1,18 +1,29 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import { Canvas, useFrame, ThreeEvent } from '@react-three/fiber';
 import { OrbitControls, Environment, Float, Html, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { useLanguage } from '@/contexts/LanguageContext';
 
-// Componente simulando el modelo de PCB
+// Componente del modelo de PCB con auto-centrado y auto-escalado
 function PCBModel({ showTooltips }: { showTooltips: boolean }) {
   // Carga el archivo real de la placa (.glb)
   const { scene } = useGLTF('/pcb.glb');
   const groupRef = useRef<THREE.Group>(null);
+
+  // Calcular bounding box del modelo para centrarlo y escalarlo
+  const { center, scaleFactor } = useMemo(() => {
+    const box = new THREE.Box3().setFromObject(scene);
+    const c = box.getCenter(new THREE.Vector3());
+    const size = box.getSize(new THREE.Vector3());
+    const maxDim = Math.max(size.x, size.y, size.z);
+    // Escalar para que la dimensión más grande sea ~5 unidades
+    const s = maxDim > 0 ? 5 / maxDim : 1;
+    return { center: c, scaleFactor: s };
+  }, [scene]);
   
-  // Posiciones exactas recolectadas
+  // Posiciones exactas recolectadas (en coordenadas del modelo original)
   const tooltips = [
     { id: 1, label: "ATtiny1614", position: [236.25, 118.84, 7.95] as [number, number, number] },
     { id: 2, label: "SIM800L EVB", position: [200.16, 123.52, 3.53] as [number, number, number] },
@@ -32,17 +43,20 @@ function PCBModel({ showTooltips }: { showTooltips: boolean }) {
   };
 
   return (
-    <group ref={groupRef}>
-      {/* El modelo 3D real */}
-      <primitive object={scene} onClick={handleClick} />
-      
-      {showTooltips && tooltips.map((tooltip) => (
-        <Html key={tooltip.id} position={tooltip.position} center>
-          <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-xl p-3 shadow-2xl w-max pointer-events-none">
-            <p className="text-white text-xs font-bold text-center tracking-wider">{tooltip.label}</p>
-          </div>
-        </Html>
-      ))}
+    <group ref={groupRef} scale={scaleFactor}>
+      {/* Grupo interior desplazado para centrar el modelo en el origen */}
+      <group position={[-center.x, -center.y, -center.z]}>
+        {/* El modelo 3D real */}
+        <primitive object={scene} onClick={handleClick} />
+        
+        {showTooltips && tooltips.map((tooltip) => (
+          <Html key={tooltip.id} position={tooltip.position} center>
+            <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-xl p-3 shadow-2xl w-max pointer-events-none">
+              <p className="text-white text-xs font-bold text-center tracking-wider">{tooltip.label}</p>
+            </div>
+          </Html>
+        ))}
+      </group>
     </group>
   );
 }
@@ -65,7 +79,7 @@ export default function Slide4() {
       </div>
       
       <div className="w-full h-full cursor-grab active:cursor-grabbing">
-        <Canvas camera={{ position: [0, 5, 5], fov: 50 }}>
+        <Canvas camera={{ position: [0, 4, 6], fov: 45 }}>
           <Environment preset="city" />
           <ambientLight intensity={1} />
           <directionalLight position={[10, 10, 10]} intensity={2} />
