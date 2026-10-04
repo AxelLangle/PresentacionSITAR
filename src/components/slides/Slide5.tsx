@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -91,13 +91,11 @@ const TYPE_TICK_MS = 28; // ~10 s para todo el snippet
 const TYPE_START_DELAY_MS = 700;
 
 /*
- * Tamaño de fuente del editor ajustado al espacio disponible:
- *  - Alto: 100vh − 170px (encabezado) − 90px (pie) − ~54px (barra + margen)
- *          repartido entre 28 líneas × 1.6 de interlineado + 2em de padding ≈ 46.8em
- *  - Ancho: media pantalla (50vw − 84px) entre ~43em (línea más larga + gutter)
+ * Tamaño de fuente del editor ajustado al espacio disponible.
+ * La fórmula vive en la clase `.code-editor-font` de globals.css para poder
+ * usar valores distintos en móvil (ancho completo) y escritorio (media pantalla).
  */
 const CODE_LINE_HEIGHT = 1.6;
-const CODE_FONT_SIZE = 'clamp(8px, min(calc((100vh - 314px) / 46.8), calc((50vw - 84px) / 43)), 17px)';
 
 /* ------------------------------------------------------------------ */
 /*  Diagrama (sitar_maquina_estados.svg) como datos                    */
@@ -240,6 +238,15 @@ export default function Slide5() {
   const [typed, setTyped] = useState(0);
   const [step, setStep] = useState(-1);
   const [modbusHover, setModbusHover] = useState(false);
+  const diagramScrollRef = useRef<HTMLDivElement>(null);
+
+  // En celular el diagrama es más ancho que la pantalla: se centra en el flujo principal (columna central)
+  useEffect(() => {
+    const el = diagramScrollRef.current;
+    if (el && el.scrollWidth > el.clientWidth) {
+      el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2;
+    }
+  }, []);
 
   // Efecto máquina de escribir
   useEffect(() => {
@@ -280,26 +287,25 @@ export default function Slide5() {
 
   return (
     <div
-      className="h-screen w-full relative overflow-hidden"
+      className="h-full w-full relative overflow-hidden"
       style={{ backgroundImage: 'radial-gradient(ellipse at 30% 40%, #1e1b2e, #0b0a12 55%, #000000)' }}
     >
+      {/* Móvil/tablet: columna con scroll vertical · Escritorio (lg): todo cabe en una pantalla */}
+      <div className="absolute inset-0 overflow-y-auto overflow-x-hidden px-5 pt-14 pb-24 lg:overflow-hidden lg:p-0">
       {/* Encabezado */}
-      <div className="absolute top-16 left-16 z-10">
-        <h2 className="text-4xl font-bold text-white tracking-tight">{t.firmwareTitle}</h2>
-        <p className="text-gray-400 mt-2 text-lg">{t.firmwareDesc}</p>
+      <div className="relative z-10 lg:absolute lg:top-16 lg:left-16">
+        <h2 className="text-2xl md:text-4xl font-bold text-white tracking-tight">{t.firmwareTitle}</h2>
+        <p className="text-gray-400 mt-1 md:mt-2 text-sm md:text-lg">{t.firmwareDesc}</p>
       </div>
 
       {/* Contenido: código (izq.) + diagrama (der.) */}
-      <div
-        className="absolute left-16 right-16 grid grid-cols-2 grid-rows-1 gap-10 items-center"
-        style={{ top: '170px', bottom: '90px' }}
-      >
+      <div className="mt-5 flex flex-col gap-6 lg:mt-0 lg:absolute lg:left-16 lg:right-16 lg:top-[170px] lg:bottom-[90px] lg:grid lg:grid-cols-2 lg:grid-rows-1 lg:gap-10 lg:items-center">
         {/* ---------------- Editor de código ---------------- */}
         <motion.div
           initial={{ opacity: 0, x: -40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="rounded-2xl overflow-hidden shadow-2xl self-center max-h-full min-h-0"
+          className="rounded-2xl overflow-hidden shadow-2xl self-stretch lg:self-center max-h-full min-h-0 shrink-0"
           style={{ backgroundColor: C.bg, border: '1px solid rgba(255,255,255,0.06)', boxShadow: '0 25px 60px rgba(0,0,0,0.6), 0 0 80px rgba(189,147,249,0.08)' }}
         >
           {/* Barra de título */}
@@ -309,13 +315,15 @@ export default function Slide5() {
               <span className="w-3 h-3 rounded-full" style={{ backgroundColor: C.yellow }} />
               <span className="w-3 h-3 rounded-full" style={{ backgroundColor: C.green }} />
             </div>
-            <span className="absolute left-1/2 -translate-x-1/2 text-sm" style={{ color: C.comment, fontFamily: MONO }}>
+            <span className="absolute left-1/2 -translate-x-1/2 text-xs md:text-sm" style={{ color: C.comment, fontFamily: MONO }}>
               SITAR-firmware.ino
             </span>
           </div>
 
-          {/* Código: la fuente se ajusta al espacio disponible para que nunca se encime con el título */}
-          <div style={{ fontFamily: MONO, fontSize: CODE_FONT_SIZE, lineHeight: CODE_LINE_HEIGHT, padding: '1em 1.5em 1em 0' }}>
+          {/* Código: la fuente se ajusta al espacio disponible para que nunca se encime con el título.
+              En celular, si la línea más larga no cabe, el bloque hace scroll horizontal. */}
+          <div className="code-editor-font overflow-x-auto" style={{ fontFamily: MONO, lineHeight: CODE_LINE_HEIGHT }} data-no-swipe="overflow">
+          <div className="w-max min-w-full" style={{ padding: '1em 1.5em 1em 0' }}>
             {CODE.map((tokens, i) => {
               const { start, len } = LINE_META[i];
               const lineNo = i + 1;
@@ -373,6 +381,7 @@ export default function Slide5() {
               );
             })}
           </div>
+          </div>
         </motion.div>
 
         {/* ---------------- Máquina de estados ---------------- */}
@@ -380,16 +389,16 @@ export default function Slide5() {
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, ease: 'easeOut', delay: 0.15 }}
-          className="h-full flex flex-col gap-4 min-h-0"
+          className="flex flex-col gap-4 min-h-0 lg:h-full"
         >
           {/* Indicador de fases */}
-          <div className="flex items-center justify-center gap-2 flex-wrap">
+          <div className="flex items-center justify-center gap-1.5 md:gap-2 flex-wrap">
             {phases.map((p, i) => {
               const active = phase === i || (p.modbus && modbusHover);
               return (
                 <React.Fragment key={i}>
                   <div
-                    className="px-4 py-1.5 rounded-full text-sm tracking-wide"
+                    className="px-2.5 py-1 text-xs md:px-4 md:py-1.5 md:text-sm rounded-full tracking-wide"
                     style={{
                       fontFamily: MONO,
                       border: `1px solid ${active ? p.color : 'rgba(255,255,255,0.12)'}`,
@@ -415,12 +424,16 @@ export default function Slide5() {
             })}
           </div>
 
-          {/* Diagrama */}
-          <div className="flex-1 min-h-0">
+          {/* Diagrama: en celular conserva un ancho mínimo legible y se desplaza horizontalmente */}
+          <div
+            ref={diagramScrollRef}
+            className="-mx-5 px-5 overflow-x-auto sm:mx-0 sm:px-0 sm:overflow-visible lg:flex-1 lg:min-h-0"
+            data-no-swipe="overflow"
+          >
             <svg
               viewBox="10 100 1080 820"
               preserveAspectRatio="xMidYMid meet"
-              className="w-full h-full"
+              className="block h-auto w-[680px] max-w-none sm:w-full lg:h-full"
               fontFamily="DejaVu Sans, Arial, sans-serif"
             >
               <defs>
@@ -598,6 +611,7 @@ export default function Slide5() {
             </svg>
           </div>
         </motion.div>
+      </div>
       </div>
     </div>
   );
