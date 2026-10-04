@@ -9,6 +9,7 @@ import Slide1 from './slides/Slide1';
 import Slide2 from './slides/Slide2';
 import Slide3 from './slides/Slide3';
 import Slide4 from './slides/Slide4';
+import Slide5 from './slides/Slide5';
 import Slide7 from './slides/Slide7';
 
 const SlidePlaceholder = ({ index, titleKey }: { index: number; titleKey: 'problem' | 'concept' | 'firmware' | 'cloud' | 'impact' | 'closing' }) => {
@@ -25,7 +26,7 @@ const slides = [
   { id: 1, component: <Slide2 /> },
   { id: 2, component: <Slide3 /> },
   { id: 3, component: <Slide4 /> },
-  { id: 4, component: <SlidePlaceholder index={4} titleKey="firmware" /> },
+  { id: 4, component: <Slide5 /> },
   { id: 5, component: <SlidePlaceholder index={5} titleKey="cloud" /> },
   { id: 6, component: <Slide7 /> },
   { id: 7, component: <SlidePlaceholder index={7} titleKey="impact" /> },
