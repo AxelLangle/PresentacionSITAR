@@ -90,6 +90,15 @@ const TYPE_STEP = 2; // caracteres por tick
 const TYPE_TICK_MS = 28; // ~10 s para todo el snippet
 const TYPE_START_DELAY_MS = 700;
 
+/*
+ * Tamaño de fuente del editor ajustado al espacio disponible:
+ *  - Alto: 100vh − 170px (encabezado) − 90px (pie) − ~54px (barra + margen)
+ *          repartido entre 28 líneas × 1.6 de interlineado + 2em de padding ≈ 46.8em
+ *  - Ancho: media pantalla (50vw − 84px) entre ~43em (línea más larga + gutter)
+ */
+const CODE_LINE_HEIGHT = 1.6;
+const CODE_FONT_SIZE = 'clamp(8px, min(calc((100vh - 314px) / 46.8), calc((50vw - 84px) / 43)), 17px)';
+
 /* ------------------------------------------------------------------ */
 /*  Diagrama (sitar_maquina_estados.svg) como datos                    */
 /* ------------------------------------------------------------------ */
@@ -282,7 +291,7 @@ export default function Slide5() {
 
       {/* Contenido: código (izq.) + diagrama (der.) */}
       <div
-        className="absolute left-16 right-16 grid grid-cols-2 gap-10 items-center"
+        className="absolute left-16 right-16 grid grid-cols-2 grid-rows-1 gap-10 items-center"
         style={{ top: '170px', bottom: '90px' }}
       >
         {/* ---------------- Editor de código ---------------- */}
@@ -290,7 +299,7 @@ export default function Slide5() {
           initial={{ opacity: 0, x: -40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="rounded-2xl overflow-hidden shadow-2xl self-center"
+          className="rounded-2xl overflow-hidden shadow-2xl self-center max-h-full min-h-0"
           style={{ backgroundColor: C.bg, border: '1px solid rgba(255,255,255,0.06)', boxShadow: '0 25px 60px rgba(0,0,0,0.6), 0 0 80px rgba(189,147,249,0.08)' }}
         >
           {/* Barra de título */}
@@ -305,11 +314,8 @@ export default function Slide5() {
             </span>
           </div>
 
-          {/* Código */}
-          <div
-            className="py-4 pr-6"
-            style={{ fontFamily: MONO, fontSize: 'clamp(11px, 1.45vh, 16px)', lineHeight: 1.75 }}
-          >
+          {/* Código: la fuente se ajusta al espacio disponible para que nunca se encime con el título */}
+          <div style={{ fontFamily: MONO, fontSize: CODE_FONT_SIZE, lineHeight: CODE_LINE_HEIGHT, padding: '1em 1.5em 1em 0' }}>
             {CODE.map((tokens, i) => {
               const { start, len } = LINE_META[i];
               const lineNo = i + 1;
@@ -330,8 +336,8 @@ export default function Slide5() {
                   }}
                 >
                   <span
-                    className="select-none text-right pr-6 pl-4"
-                    style={{ width: '3.5em', color: C.comment, opacity: reached ? 0.7 : 0.15, transition: 'opacity 0.2s' }}
+                    className="select-none text-right shrink-0"
+                    style={{ width: '3.6em', paddingRight: '1.4em', color: C.comment, opacity: reached ? 0.7 : 0.15, transition: 'opacity 0.2s' }}
                   >
                     {lineNo}
                   </span>
