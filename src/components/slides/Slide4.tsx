@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useRef, useState, useMemo } from 'react';
-import { Canvas, useFrame, ThreeEvent } from '@react-three/fiber';
+import React, { useRef, useState, useMemo, useEffect } from 'react';
+import { Canvas, useFrame, useThree, ThreeEvent } from '@react-three/fiber';
 import { OrbitControls, Environment, Float, Html, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -64,22 +64,40 @@ function PCBModel({ showTooltips }: { showTooltips: boolean }) {
 // Pre-cargamos el modelo en memoria para evitar tirones
 useGLTF.preload('/pcb.glb');
 
+// Posición base de la cámara (pensada para pantallas horizontales)
+const BASE_CAMERA: [number, number, number] = [0, 4, 6];
+
+// Aleja la cámara en pantallas verticales (celular) para que la placa completa quepa a lo ancho
+function ResponsiveCamera() {
+  const { camera, size } = useThree();
+
+  useEffect(() => {
+    const aspect = size.width / size.height;
+    const factor = aspect < 1 ? Math.min(1 / aspect, 2.2) : 1;
+    camera.position.set(BASE_CAMERA[0] * factor, BASE_CAMERA[1] * factor, BASE_CAMERA[2] * factor);
+    camera.updateProjectionMatrix();
+  }, [camera, size.width, size.height]);
+
+  return null;
+}
+
 export default function Slide4() {
   const { t } = useLanguage();
   const [showTooltips, setShowTooltips] = useState(false);
 
   return (
     <div 
-      className="h-screen w-full relative flex items-center justify-center"
+      className="h-full w-full relative flex items-center justify-center"
       style={{ backgroundImage: 'radial-gradient(ellipse at center, #111827, #000000)' }}
     >
-      <div className="absolute top-16 left-16 z-10 pointer-events-none">
-        <h2 className="text-4xl font-bold text-white tracking-tight">{t.hardware}</h2>
-        <p className="text-gray-400 mt-2 text-lg">{t.hardwareDesc}</p>
+      <div className="absolute top-14 left-5 right-5 md:top-16 md:left-16 md:right-auto z-10 pointer-events-none">
+        <h2 className="text-2xl md:text-4xl font-bold text-white tracking-tight">{t.hardware}</h2>
+        <p className="text-gray-400 mt-1 md:mt-2 text-sm md:text-lg">{t.hardwareDesc}</p>
       </div>
       
-      <div className="w-full h-full cursor-grab active:cursor-grabbing">
-        <Canvas camera={{ position: [0, 4, 6], fov: 45 }}>
+      <div className="w-full h-full cursor-grab active:cursor-grabbing touch-none" data-no-swipe>
+        <Canvas camera={{ position: BASE_CAMERA, fov: 45 }}>
+          <ResponsiveCamera />
           <Environment preset="city" />
           <ambientLight intensity={1} />
           <directionalLight position={[10, 10, 10]} intensity={2} />
@@ -92,7 +110,7 @@ export default function Slide4() {
 
       <button
         onClick={() => setShowTooltips(!showTooltips)}
-        className="absolute bottom-32 right-16 px-6 py-3 rounded-full font-bold transition-all shadow-xl z-20 bg-blue-600/80 backdrop-blur-md border border-blue-400/30 text-white hover:bg-blue-500 hover:scale-105"
+        className="absolute bottom-20 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto md:bottom-32 md:right-16 px-5 py-2.5 md:px-6 md:py-3 text-sm md:text-base whitespace-nowrap rounded-full font-bold transition-all shadow-xl z-20 bg-blue-600/80 backdrop-blur-md border border-blue-400/30 text-white hover:bg-blue-500 hover:scale-105"
       >
         {showTooltips ? 'Ocultar Componentes' : 'Explorar Placa'}
       </button>
