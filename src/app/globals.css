@@ -5,7 +5,33 @@
   --foreground: #ffffff;
 }
 
+html,
+body {
+  /* Evita el "pull-to-refresh" y el rebote al deslizar entre diapositivas en móvil */
+  overscroll-behavior: none;
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/*
+ * Tamaño de fuente del editor de código (Slide 5).
+ *  - Móvil / tablet: el editor ocupa todo el ancho; ~40em por línea (con gutter).
+ *    Si no cabe, el bloque hace scroll horizontal en lugar de encoger más la letra.
+ *  - Escritorio (lg): media pantalla y alto limitado por el encabezado/pie
+ *      Alto: 100vh − 170px (encabezado) − 90px (pie) − ~54px (barra + margen)
+ *            repartido entre 28 líneas × 1.6 de interlineado + 2em de padding ≈ 46.8em
+ *      Ancho: media pantalla (50vw − 84px) entre ~43em (línea más larga + gutter)
+ */
+.code-editor-font {
+  font-size: clamp(10px, calc((100vw - 40px) / 40), 15px);
+}
+
+@media (min-width: 1024px) {
+  .code-editor-font {
+    font-size: clamp(8px, min(calc((100vh - 314px) / 46.8), calc((50vw - 84px) / 43)), 17px);
+  }
 }
