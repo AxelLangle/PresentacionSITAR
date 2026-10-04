@@ -3,10 +3,18 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useIsMobile } from '@/hooks/useMediaQuery';
+
+// Lienzo de las líneas conectoras (el centro coincide con el estallido)
+const SVG_W = 600;
+const SVG_H = 400;
 
 export default function Slide3() {
   const { t } = useLanguage();
   const [stage, setStage] = useState(0); // 0: falling, 1: exploded
+  const isMobile = useIsMobile();
+  // En móvil la constelación se compacta para que las etiquetas no se salgan de la pantalla
+  const spread = isMobile ? 0.6 : 1;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -16,13 +24,13 @@ export default function Slide3() {
   }, []);
 
   const nodes = [
-    { id: 1, label: t.word1, x: -180, y: -60, delay: 0 },
-    { id: 2, label: t.word2, x: 0, y: -120, delay: 0.2 },
-    { id: 3, label: t.word3, x: 180, y: -60, delay: 0.4 },
+    { id: 1, label: t.word1, x: -180 * spread, y: -60 * spread, delay: 0 },
+    { id: 2, label: t.word2, x: 0, y: -120 * spread, delay: 0.2 },
+    { id: 3, label: t.word3, x: 180 * spread, y: -60 * spread, delay: 0.4 },
   ];
 
   return (
-    <div className="h-screen w-full bg-black relative flex items-center justify-center overflow-hidden">
+    <div className="h-full w-full bg-black relative flex items-center justify-center overflow-hidden">
       
       {/* Etapa 0: Gota cayendo */}
       <motion.div
@@ -68,7 +76,7 @@ export default function Slide3() {
                <motion.div 
                  animate={{ y: [-5, 5, -5] }}
                  transition={{ repeat: Infinity, duration: 3, ease: "easeInOut", delay: node.delay }}
-                 className="w-16 h-16 rounded-full bg-slate-900/50 border border-blue-500/30 backdrop-blur-sm flex items-center justify-center"
+                 className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-slate-900/50 border border-blue-500/30 backdrop-blur-sm flex items-center justify-center"
                  style={{ boxShadow: '0 0 30px rgba(59,130,246,0.2)' }}
                >
                  <div className="w-2 h-2 rounded-full bg-blue-300" style={{ boxShadow: '0 0 15px rgba(147,197,253,1)' }} />
@@ -77,7 +85,7 @@ export default function Slide3() {
                  initial={{ opacity: 0, y: 10 }}
                  animate={{ opacity: 1, y: 0 }}
                  transition={{ delay: node.delay + 0.5 }}
-                 className="text-white mt-4 font-light tracking-widest text-sm uppercase"
+                 className="text-white mt-3 md:mt-4 font-light tracking-wider md:tracking-widest text-[11px] md:text-sm uppercase"
                >
                  {node.label}
                </motion.span>
@@ -85,28 +93,17 @@ export default function Slide3() {
            ))}
            
            {/* Líneas conectoras */}
-           <svg className="absolute inset-0 pointer-events-none" style={{ width: '600px', height: '400px', transform: 'translate(-50%, -50%)', left: '50%', top: '50%' }}>
-             <motion.line 
-               initial={{ pathLength: 0, opacity: 0 }}
-               animate={{ pathLength: 1, opacity: 0.2 }}
-               transition={{ duration: 1, delay: 0.8 }}
-               x1="300" y1="200" x2="120" y2="140" 
-               stroke="#60a5fa" strokeWidth="1" 
-             />
-             <motion.line 
-               initial={{ pathLength: 0, opacity: 0 }}
-               animate={{ pathLength: 1, opacity: 0.2 }}
-               transition={{ duration: 1, delay: 1 }}
-               x1="300" y1="200" x2="300" y2="80" 
-               stroke="#60a5fa" strokeWidth="1" 
-             />
-             <motion.line 
-               initial={{ pathLength: 0, opacity: 0 }}
-               animate={{ pathLength: 1, opacity: 0.2 }}
-               transition={{ duration: 1, delay: 1.2 }}
-               x1="300" y1="200" x2="480" y2="140" 
-               stroke="#60a5fa" strokeWidth="1" 
-             />
+           <svg className="absolute inset-0 pointer-events-none" style={{ width: `${SVG_W}px`, height: `${SVG_H}px`, transform: 'translate(-50%, -50%)', left: '50%', top: '50%' }}>
+             {nodes.map((node, i) => (
+               <motion.line 
+                 key={node.id}
+                 initial={{ pathLength: 0, opacity: 0 }}
+                 animate={{ pathLength: 1, opacity: 0.2 }}
+                 transition={{ duration: 1, delay: 0.8 + i * 0.2 }}
+                 x1={SVG_W / 2} y1={SVG_H / 2} x2={SVG_W / 2 + node.x} y2={SVG_H / 2 + node.y} 
+                 stroke="#60a5fa" strokeWidth="1" 
+               />
+             ))}
            </svg>
         </div>
       )}
