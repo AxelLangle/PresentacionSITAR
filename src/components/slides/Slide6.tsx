@@ -29,6 +29,12 @@ const CONFIG = {
     A2: "M 480,400 Q 480,260 590,205",
     B2: "M 800,400 Q 800,260 690,205",
     C: "M 705,170 Q 880,170 1000,260"
+  },
+  labels: {
+    ftp: { title: "Servicio FTP", sub1: "vsftpd", sub2: "usuario dedicado" },
+    http: { title: "Servicio HTTP", sub1: "FastAPI · Python", sub2: "usuario dedicado" },
+    db: { title: "PostgreSQL", sub: "historial hídrico" },
+    dash: { title: "Dashboard", sub: "todo se muestra aquí" }
   }
 };
 
