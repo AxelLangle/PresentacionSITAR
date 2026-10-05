@@ -127,11 +127,12 @@ const PacketFlow = ({ path, color, active, loop }: any) => {
   );
 };
 
-const FloatingLabel = ({ x, y, title, sub, colorClass, align = 'left', icon }: any) => (
+const FloatingLabel = ({ x, y, title, sub, colorClass, align = 'left', icon, logoSrc }: any) => (
   <foreignObject x={x} y={y} width="280" height="90" style={{ pointerEvents: 'none' }}>
     <div xmlns="http://www.w3.org/1999/xhtml" className={`flex flex-col justify-center bg-slate-900/85 border border-slate-700/60 rounded-xl p-3 backdrop-blur-md shadow-2xl ${align === 'right' ? 'items-end text-right' : align === 'center' ? 'items-center text-center' : 'items-start text-left'}`}>
       <div className="flex items-center gap-2">
-        {icon && <span className="text-lg">{icon}</span>}
+        {logoSrc && <img src={logoSrc} alt="logo" className="w-5 h-5 object-contain" />}
+        {!logoSrc && icon && <span className="text-lg">{icon}</span>}
         <div className="font-bold text-slate-100 text-sm">{title}</div>
       </div>
       <div className={`text-xs mt-1 ${colorClass}`}>{sub}</div>
