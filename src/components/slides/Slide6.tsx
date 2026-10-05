@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useAnimationFrame, useReducedMotion } from 'framer-motion';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 /* ══════════════════════════════════════════════════════════════════════
    Slide 6 · La Memoria — Infraestructura Cloud y Backend
@@ -55,17 +56,6 @@ const CONFIG = {
     B2: 'M 668,366 C 652,310 610,280 572,264', // API → BD
     C: 'M 568,262 C 604,214 700,204 762,226 C 822,246 866,276 900,308', // BD → Dashboard
   } as Record<RouteKey, string>,
-  labels: {
-    azure: { title: 'Microsoft Azure', sub: 'VM · Ubuntu Server' },
-    ftp: { title: 'Servicio FTP', sub1: 'vsftpd', sub2: 'usuario dedicado' },
-    http: { title: 'Servicio HTTP', sub1: 'FastAPI · Python', sub2: 'usuario dedicado' },
-    db: { title: 'PostgreSQL', sub: 'historial hídrico' },
-    dash: { title: 'Dashboard', sub: 'todo se muestra aquí' },
-    sim: 'SITAR · SIM800L · red celular (GPRS)',
-    ftpRoute: { title: 'Archivos (FTP)', sub: 'puerto 21' },
-    httpRoute: { title: 'POST /api/telemetry', sub: 'HTTP · puerto 8080' },
-    users: 'usuarios distintos',
-  },
 };
 
 /* Línea de tiempo normalizada de un paquete (0 → 1) */
@@ -189,7 +179,7 @@ function Cloud({ x, y }: { x: number; y: number }) {
   );
 }
 
-function Dashboard({ live }: { live: boolean }) {
+function Dashboard({ live, t }: { live: boolean, t: any }) {
   const { x, y, w, h, depth } = CONFIG.nodes.dashboard;
   const bars = [16, 28, 12, 38, 24, 32];
   return (
@@ -200,18 +190,18 @@ function Dashboard({ live }: { live: boolean }) {
         <rect width={w} height={h} rx={6} fill="#101a3c" stroke="#38bdf8" strokeWidth={1.6} />
         <path d={`M0,28 L0,6 Q0,0 6,0 L${w - 6},0 Q${w},0 ${w},6 L${w},28 Z`} fill="#1a2655" />
         <text x={14} y={19} fill="#f1f5ff" fontSize={12.5} fontWeight={700}>Dashboard SITAR</text>
-        <text x={w - 22} y={18} fill="#4ade80" fontSize={8.5} fontWeight={700} textAnchor="end">EN VIVO</text>
+        <text x={w - 22} y={18} fill="#4ade80" fontSize={8.5} fontWeight={700} textAnchor="end">{t.live}</text>
         <circle cx={w - 14} cy={14} r={3.2} fill="#4ade80" className={live ? 's6-blink' : ''} />
 
         {/* Flujo instantáneo */}
         <rect x={10} y={34} width={118} height={34} rx={4} fill="#18244f" stroke="#2a3a73" strokeWidth={0.8} />
-        <text x={18} y={47} fill="#9fb0e8" fontSize={9}>Flujo instantáneo</text>
+        <text x={18} y={47} fill="#9fb0e8" fontSize={9}>{t.instFlow}</text>
         <rect x={18} y={54} width={96} height={6} rx={3} fill="#243566" />
         <rect x={18} y={54} width={70} height={6} rx={3} fill="#2b8fa6" className={live ? 's6-fill' : ''} />
 
         {/* Totalizador */}
         <rect x={134} y={34} width={116} height={34} rx={4} fill="#18244f" stroke="#2a3a73" strokeWidth={0.8} />
-        <text x={142} y={47} fill="#9fb0e8" fontSize={9}>Totalizador</text>
+        <text x={142} y={47} fill="#9fb0e8" fontSize={9}>{t.totalizer}</text>
         <rect x={142} y={54} width={98} height={6} rx={3} fill="#243566" />
         <rect x={142} y={54} width={70} height={6} rx={3} fill="#4ade80" className={live ? 's6-fill' : ''} style={{ animationDelay: '-2s' }} />
 
@@ -256,6 +246,19 @@ type Props = {
 export default function Slide06Memoria({ mode = 'steps', initialStep = 0, showTitle = true }: Props) {
   const { maxStep, cycleSeconds: CYCLE, packetsPerChain: N } = CONFIG;
   const isReduced = !!useReducedMotion();
+  const { t } = useLanguage();
+
+  const L = {
+    azure: { title: 'Microsoft Azure', sub: 'VM · Ubuntu Server' },
+    ftp: { title: t.ftpService, sub1: 'vsftpd', sub2: t.dedicatedUser },
+    http: { title: t.httpService, sub1: 'FastAPI · Python', sub2: t.dedicatedUser },
+    db: { title: 'PostgreSQL', sub: t.waterHistory },
+    dash: { title: 'Dashboard', sub: t.dashAllHere },
+    sim: `SITAR · SIM800L · ${t.cellularNet} (GPRS)`,
+    ftpRoute: { title: t.filesFtp, sub: `${t.port} 21` },
+    httpRoute: { title: 'POST /api/telemetry', sub: `HTTP · ${t.port} 8080` },
+    users: t.distinctUsers,
+  };
 
   const [step, setStep] = useState(mode === 'loop' ? maxStep : initialStep);
   const stepRef = useRef(step); // fuente de verdad síncrona (la lee el teclado y el reloj)
@@ -289,7 +292,7 @@ export default function Slide06Memoria({ mode = 'steps', initialStep = 0, showTi
     if (!lookup) return;
     const s = stepRef.current;
     const cOn = s >= 4;
-    const t = tMs / 1000;
+    const tMsNum = tMs / 1000;
     const g = { ftp: 0, http: 0, db: 0, dash: 0 };
 
     CHAINS.forEach((chain, ci) => {
@@ -297,7 +300,7 @@ export default function Slide06Memoria({ mode = 'steps', initialStep = 0, showTi
       for (let k = 0; k < N; k++) {
         const el = packetRefs.current[ci * N + k];
         if (!el) continue;
-        const u = (((t / CYCLE + chain.phase + k / N) % 1) + 1) % 1;
+        const u = (((tMsNum / CYCLE + chain.phase + k / N) % 1) + 1) % 1;
         const p = on ? place(u, chain.routes, cOn, lookup) : null;
         if (p) {
           el.setAttribute('transform', `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) scale(${p.s.toFixed(2)})`);
@@ -315,7 +318,7 @@ export default function Slide06Memoria({ mode = 'steps', initialStep = 0, showTi
 
     (Object.keys(g) as (keyof typeof g)[]).forEach((key) => {
       const el = glowRefs.current[key];
-      if (el) el.style.opacity = String(clamp(g[key]));
+      if (el) el.style.opacity = String(clamp(g[key as keyof typeof g]));
     });
   }, [CYCLE, N]);
 
@@ -337,18 +340,17 @@ export default function Slide06Memoria({ mode = 'steps', initialStep = 0, showTi
 
   // Con prefers-reduced-motion: un frame congelado (paquetes quietos, sin loop) que se refresca al cambiar de paso
   useEffect(() => { if (isReduced) frame(2400); }, [isReduced, step, frame]);
-  useAnimationFrame((t) => { if (!isReduced) frame(t); });
+  useAnimationFrame((time) => { if (!isReduced) frame(time); });
 
   const n = CONFIG.nodes;
   const c = CONFIG.colors;
-  const L = CONFIG.labels;
 
   return (
     <div className="relative h-full w-full overflow-hidden" style={{ background: `linear-gradient(135deg, ${c.bgFrom}, ${c.bgTo})` }}>
       {showTitle && (
         <div className="absolute left-12 top-10 z-10">
-          <h2 className="text-3xl font-bold tracking-tight text-white md:text-5xl">La Memoria</h2>
-          <p className="mt-2 text-lg text-slate-400">Infraestructura Cloud y Backend</p>
+          <h2 className="text-3xl font-bold tracking-tight text-white md:text-5xl">{t.cloudTitle}</h2>
+          <p className="mt-2 text-lg text-slate-400">{t.cloudDesc}</p>
         </div>
       )}
 
@@ -488,7 +490,7 @@ export default function Slide06Memoria({ mode = 'steps', initialStep = 0, showTi
           <text x={1030} y={200} fill="#f1f5ff" fontSize={21} fontWeight={700} textAnchor="middle">{L.dash.title}</text>
           <text x={1030} y={221} fill="#a5b4fc" fontSize={14} textAnchor="middle">{L.dash.sub}</text>
           <g className="s6-float">
-            <Dashboard live={step >= 4 && !isReduced} />
+            <Dashboard live={step >= 4 && !isReduced} t={t} />
           </g>
         </Reveal>
       </svg>

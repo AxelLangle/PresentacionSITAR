@@ -22,7 +22,21 @@ export const translations = {
     word3: "Nube",
     flowAlert: "¡ALERTA DE FLUJO!",
     restoreFlow: "Restaurar Flujo",
-    simulateAnomaly: "Simular Anomalía"
+    simulateAnomaly: "Simular Anomalía",
+    cloudTitle: "La Memoria",
+    cloudDesc: "Infraestructura Cloud y Backend",
+    ftpService: "Servicio FTP",
+    dedicatedUser: "usuario dedicado",
+    httpService: "Servicio HTTP",
+    waterHistory: "historial hídrico",
+    dashAllHere: "todo se muestra aquí",
+    cellularNet: "red celular",
+    filesFtp: "Archivos (FTP)",
+    port: "puerto",
+    distinctUsers: "usuarios distintos",
+    live: "EN VIVO",
+    instFlow: "Flujo instantáneo",
+    totalizer: "Totalizador"
   },
   EN: {
     title: "SITAR",
@@ -47,7 +61,21 @@ export const translations = {
     word3: "Cloud",
     flowAlert: "FLOW ALERT!",
     restoreFlow: "Restore Flow",
-    simulateAnomaly: "Simulate Anomaly"
+    simulateAnomaly: "Simulate Anomaly",
+    cloudTitle: "The Memory",
+    cloudDesc: "Cloud Infrastructure and Backend",
+    ftpService: "FTP Service",
+    dedicatedUser: "dedicated user",
+    httpService: "HTTP Service",
+    waterHistory: "water history",
+    dashAllHere: "everything is shown here",
+    cellularNet: "cellular network",
+    filesFtp: "Files (FTP)",
+    port: "port",
+    distinctUsers: "distinct users",
+    live: "LIVE",
+    instFlow: "Instant flow",
+    totalizer: "Totalizer"
   },
   PL: {
     title: "SITAR",
@@ -72,7 +100,21 @@ export const translations = {
     word3: "Chmura",
     flowAlert: "ALARM PRZEPŁYWU!",
     restoreFlow: "Przywróć przepływ",
-    simulateAnomaly: "Symuluj anomalię"
+    simulateAnomaly: "Symuluj anomalię",
+    cloudTitle: "Pamięć",
+    cloudDesc: "Infrastruktura Chmurowa i Backend",
+    ftpService: "Usługa FTP",
+    dedicatedUser: "dedykowany użytkownik",
+    httpService: "Usługa HTTP",
+    waterHistory: "historia wodna",
+    dashAllHere: "wszystko jest tutaj",
+    cellularNet: "sieć komórkowa",
+    filesFtp: "Pliki (FTP)",
+    port: "port",
+    distinctUsers: "różni użytkownicy",
+    live: "NA ŻYWO",
+    instFlow: "Przepływ chwilowy",
+    totalizer: "Licznik"
   },
   SK: {
     title: "SITAR",
@@ -97,7 +139,21 @@ export const translations = {
     word3: "Cloud",
     flowAlert: "ALARM PRIETOKU!",
     restoreFlow: "Obnoviť prietok",
-    simulateAnomaly: "Simulovať anomáliu"
+    simulateAnomaly: "Simulovať anomáliu",
+    cloudTitle: "Pamäť",
+    cloudDesc: "Cloudová infraštruktúra a backend",
+    ftpService: "Služba FTP",
+    dedicatedUser: "vyhradený používateľ",
+    httpService: "Služba HTTP",
+    waterHistory: "vodná história",
+    dashAllHere: "všetko je tu zobrazené",
+    cellularNet: "celulárna sieť",
+    filesFtp: "Súbory (FTP)",
+    port: "port",
+    distinctUsers: "rôzni používatelia",
+    live: "NAŽIVO",
+    instFlow: "Okamžitý prietok",
+    totalizer: "Počítadlo"
   }
 };
 
