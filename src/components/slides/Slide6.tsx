@@ -50,11 +50,11 @@ const CONFIG = {
     dashboard: { x: 900, y: 232, w: 260, h: 151, depth: { dx: 22, dy: -10 } },
   },
   routes: {
-    A1: 'M 560,592 C 478,588 440,548 446,478', // SIM → FTP
-    A2: 'M 456,366 C 470,304 516,276 562,264', // FTP → BD
-    B1: 'M 560,592 C 642,588 680,548 672,490', // SIM → API
-    B2: 'M 668,366 C 652,310 610,280 572,264', // API → BD
-    C: 'M 568,262 C 604,214 700,204 762,226 C 822,246 866,276 900,308', // BD → Dashboard
+    A1: 'M 560,620 C 500,600 445,520 445,440', // SIM → FTP
+    A2: 'M 445,360 C 450,290 510,240 560,205', // FTP → BD (base is ~205)
+    B1: 'M 560,620 C 620,600 675,520 675,440', // SIM → API
+    B2: 'M 675,360 C 670,290 610,240 560,205', // API → BD
+    C:  'M 560,149 C 620,100 750,180 900,270', // BD top → Dashboard
   } as Record<RouteKey, string>,
 };
 
@@ -417,7 +417,7 @@ export default function Slide06Memoria({ mode = 'steps', initialStep = 0, showTi
         {/* Rutas: halo + guion que "marcha" en el sentido del flujo */}
         {(Object.keys(CONFIG.routes) as RouteKey[]).map((key) => {
           const color = key.startsWith('A') ? c.cyan.glow : key.startsWith('B') ? c.green.glow : c.routeC;
-          const show = key === 'C' ? step >= 4 : step >= 1;
+          const show = step >= 1;
           return (
             <Reveal key={key} show={show}>
               <path ref={(el) => { pathRefs.current[key] = el; }} d={CONFIG.routes[key]} fill="none" stroke={color} strokeOpacity={0.16} strokeWidth={9} strokeLinecap="round" />
@@ -486,7 +486,7 @@ export default function Slide06Memoria({ mode = 'steps', initialStep = 0, showTi
         </Reveal>
 
         {/* Dashboard (encima de todo: los paquetes "entran" por su borde izquierdo) */}
-        <Reveal show={step >= 4} x={30}>
+        <Reveal show={step >= 0} x={30}>
           <text x={1030} y={200} fill="#f1f5ff" fontSize={21} fontWeight={700} textAnchor="middle">{L.dash.title}</text>
           <text x={1030} y={221} fill="#a5b4fc" fontSize={14} textAnchor="middle">{L.dash.sub}</text>
           <g className="s6-float">
