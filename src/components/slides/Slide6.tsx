@@ -243,7 +243,7 @@ type Props = {
   showTitle?: boolean;
 };
 
-export default function Slide06Memoria({ mode = 'steps', initialStep = 0, showTitle = true }: Props) {
+export default function Slide06Memoria({ mode = 'loop', initialStep = 4, showTitle = true }: Props) {
   const { maxStep, cycleSeconds: CYCLE, packetsPerChain: N } = CONFIG;
   const isReduced = !!useReducedMotion();
   const { t } = useLanguage();
@@ -335,11 +335,15 @@ export default function Slide06Memoria({ mode = 'steps', initialStep = 0, showTi
       });
     });
     lookupRef.current = out;
+    console.log('Slide6 Mount: lookup populated', Object.keys(out));
     if (isReduced) frame(2400);
   }, [frame, isReduced]);
 
   // Con prefers-reduced-motion: un frame congelado (paquetes quietos, sin loop) que se refresca al cambiar de paso
-  useEffect(() => { if (isReduced) frame(2400); }, [isReduced, step, frame]);
+  useEffect(() => { 
+    console.log('Slide6 step updated:', step, 'cOn will be:', step >= 4);
+    if (isReduced) frame(2400); 
+  }, [isReduced, step, frame]);
   useAnimationFrame((time) => { if (!isReduced) frame(time); });
 
   const n = CONFIG.nodes;
