@@ -36,7 +36,17 @@ export const translations = {
     distinctUsers: "usuarios distintos",
     live: "EN VIVO",
     instFlow: "Flujo instantáneo",
-    totalizer: "Totalizador"
+    totalizer: "Totalizador",
+    dashTitle: "La Visión",
+    dashSubtitle: "Dashboard Frontend",
+    systemOnline: "SISTEMA EN LÍNEA",
+    accVolume: "Volumen Acumulado",
+    sensorId: "Sensor ID",
+    reportGen: "Generador de Reportes",
+    eventLog: "Registro de Eventos",
+    ftpLog: "Registro de Transferencias FTP",
+    waitingTelemetry: "Esperando telemetría...",
+    waitingActivity: "Esperando actividad FTP..."
   },
   EN: {
     title: "SITAR",
@@ -75,7 +85,17 @@ export const translations = {
     distinctUsers: "distinct users",
     live: "LIVE",
     instFlow: "Instant flow",
-    totalizer: "Totalizer"
+    totalizer: "Totalizer",
+    dashTitle: "The Vision",
+    dashSubtitle: "Frontend Dashboard",
+    systemOnline: "SYSTEM ONLINE",
+    accVolume: "Accumulated Volume",
+    sensorId: "Sensor ID",
+    reportGen: "Report Generator",
+    eventLog: "Event Log",
+    ftpLog: "FTP Transfers Log",
+    waitingTelemetry: "Waiting for telemetry...",
+    waitingActivity: "Waiting for FTP activity..."
   },
   PL: {
     title: "SITAR",
@@ -114,7 +134,17 @@ export const translations = {
     distinctUsers: "różni użytkownicy",
     live: "NA ŻYWO",
     instFlow: "Przepływ chwilowy",
-    totalizer: "Licznik"
+    totalizer: "Licznik",
+    dashTitle: "Wizja",
+    dashSubtitle: "Frontend Dashboard",
+    systemOnline: "SYSTEM ONLINE",
+    accVolume: "Skumulowana Objętość",
+    sensorId: "ID Czujnika",
+    reportGen: "Generator Raportów",
+    eventLog: "Dziennik Zdarzeń",
+    ftpLog: "Dziennik Transferów FTP",
+    waitingTelemetry: "Oczekiwanie na telemetrię...",
+    waitingActivity: "Oczekiwanie na aktywność FTP..."
   },
   SK: {
     title: "SITAR",
@@ -153,7 +183,17 @@ export const translations = {
     distinctUsers: "rôzni používatelia",
     live: "NAŽIVO",
     instFlow: "Okamžitý prietok",
-    totalizer: "Počítadlo"
+    totalizer: "Počítadlo",
+    dashTitle: "Vízia",
+    dashSubtitle: "Frontend Dashboard",
+    systemOnline: "SYSTÉM ONLINE",
+    accVolume: "Akumulovaný Objem",
+    sensorId: "ID Senzora",
+    reportGen: "Generátor Reportov",
+    eventLog: "Denník Udalostí",
+    ftpLog: "Záznam FTP Transferov",
+    waitingTelemetry: "Čaká sa na telemetriu...",
+    waitingActivity: "Čaká sa na FTP aktivitu..."
   }
 };
 
