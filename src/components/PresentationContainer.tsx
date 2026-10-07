@@ -12,6 +12,8 @@ import Slide4 from './slides/Slide4';
 import Slide5 from './slides/Slide5';
 import Slide6 from './slides/Slide6';
 import Slide7 from './slides/Slide7';
+import Slide8 from './slides/Slide8';
+import Slide9 from './slides/Slide9';
 
 const SlidePlaceholder = ({ index, titleKey }: { index: number; titleKey: 'problem' | 'concept' | 'firmware' | 'cloud' | 'impact' | 'closing' }) => {
   const { t } = useLanguage();
@@ -30,8 +32,8 @@ const slides = [
   { id: 4, component: <Slide5 /> },
   { id: 5, component: <Slide6 /> },
   { id: 6, component: <Slide7 /> },
-  { id: 7, component: <SlidePlaceholder index={7} titleKey="impact" /> },
-  { id: 8, component: <SlidePlaceholder index={8} titleKey="closing" /> },
+  { id: 7, component: <Slide8 /> },
+  { id: 8, component: <Slide9 /> },
 ];
 
 // Umbrales del gesto de deslizar (swipe) en pantallas táctiles
