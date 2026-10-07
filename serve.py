@@ -3,8 +3,8 @@ import http.server
 import socketserver
 import sys
 
-# El puerto 80 es el estándar para tráfico web (HTTP)
-PORT = 80
+# Usamos el puerto 3333 según tu configuración de Azure
+PORT = 3333
 DIRECTORY = "out"
 
 class NextJsStaticRouteHandler(http.server.SimpleHTTPRequestHandler):
