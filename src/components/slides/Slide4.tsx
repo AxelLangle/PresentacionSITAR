@@ -9,7 +9,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 // Componente del modelo de PCB con auto-centrado y auto-escalado
 function PCBModel({ showTooltips }: { showTooltips: boolean }) {
   // Carga el archivo real de la placa (.glb)
-  const { scene } = useGLTF('/pcb.glb');
+  const { scene } = useGLTF('/PCB_SITARV2.glb');
   const groupRef = useRef<THREE.Group>(null);
 
   // Calcular bounding box del modelo para centrarlo y escalarlo
@@ -62,7 +62,7 @@ function PCBModel({ showTooltips }: { showTooltips: boolean }) {
 }
 
 // Pre-cargamos el modelo en memoria para evitar tirones
-useGLTF.preload('/pcb.glb');
+useGLTF.preload('/PCB_SITARV2.glb');
 
 // Posición base de la cámara (pensada para pantallas horizontales)
 const BASE_CAMERA: [number, number, number] = [0, 4, 6];
