@@ -53,9 +53,9 @@ export default function Slide8() {
             <div className="w-16 h-16 bg-blue-500/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <ShieldCheck className="w-8 h-8 text-blue-400" />
             </div>
-            <h3 className="text-2xl font-semibold text-white mb-4">Cumplimiento</h3>
+            <h3 className="text-2xl font-semibold text-white mb-4">{t.compliance}</h3>
             <p className="text-slate-400 leading-relaxed">
-              Totalmente alineado con la normativa <strong>{t.norm}</strong> para la medición de volúmenes de aguas nacionales usadas, explotadas o aprovechadas.
+              {t.complianceDesc1}<strong>{t.norm}</strong>{t.complianceDesc2}
             </p>
           </motion.div>
 
@@ -64,9 +64,9 @@ export default function Slide8() {
             <div className="w-16 h-16 bg-cyan-500/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <Droplets className="w-8 h-8 text-cyan-400" />
             </div>
-            <h3 className="text-2xl font-semibold text-white mb-4">Eficiencia Hídrica</h3>
+            <h3 className="text-2xl font-semibold text-white mb-4">{t.waterEfficiency}</h3>
             <p className="text-slate-400 leading-relaxed">
-              Detección de anomalías en tiempo real para prevenir fugas masivas, optimizando el uso del recurso y reduciendo costos operativos.
+              {t.waterEfficiencyDesc}
             </p>
           </motion.div>
 
@@ -75,9 +75,9 @@ export default function Slide8() {
             <div className="w-16 h-16 bg-emerald-500/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <Globe className="w-8 h-8 text-emerald-400" />
             </div>
-            <h3 className="text-2xl font-semibold text-white mb-4">Escalabilidad</h3>
+            <h3 className="text-2xl font-semibold text-white mb-4">{t.scalability}</h3>
             <p className="text-slate-400 leading-relaxed">
-              Diseño modular que permite desplegar miles de nodos sensores a lo largo de redes de distribución interconectadas en la nube.
+              {t.scalabilityDesc}
             </p>
           </motion.div>
         </div>
