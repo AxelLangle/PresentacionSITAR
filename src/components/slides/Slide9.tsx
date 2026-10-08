@@ -53,7 +53,7 @@ export default function Slide9() {
           transition={{ duration: 1, delay: 1.2 }}
           className="text-xl md:text-2xl text-slate-400 font-light"
         >
-          Gracias por su atención.
+          {t.thanks}
         </motion.p>
       </div>
     </div>
