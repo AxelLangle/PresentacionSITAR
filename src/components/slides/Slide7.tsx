@@ -104,27 +104,6 @@ export default function Slide7() {
     return null;
   };
 
-  const [step, setStep] = useState(0);
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight' || e.key === ' ') {
-        if (step < 1) {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          setStep(1);
-        }
-      } else if (e.key === 'ArrowLeft') {
-        if (step > 0) {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          setStep(0);
-        }
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown, { capture: true });
-    return () => window.removeEventListener('keydown', handleKeyDown, { capture: true });
-  }, [step]);
-
   return (
     <div className="relative h-full w-full overflow-hidden bg-[#080D1A] font-sans flex flex-col">
       {/* Background gradients simulating dashboard */}
@@ -132,50 +111,11 @@ export default function Slide7() {
         background: 'radial-gradient(circle at 15% 10%, rgba(0, 229, 255, 0.04), transparent 40%), radial-gradient(circle at 85% 90%, rgba(11, 112, 183, 0.08), transparent 50%)'
       }} />
 
-      {/* Slide Content Overlay */}
-      <AnimatePresence mode="wait">
-        {step === 0 && (
-          <motion.div 
-            key="title"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
-            transition={{ duration: 0.6 }}
-            className="absolute inset-0 z-50 flex flex-col items-center justify-center p-12 bg-slate-950/80 backdrop-blur-sm"
-          >
-            <h2 className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-6">
-              {t.dashTitle}
-            </h2>
-            <p className="text-2xl md:text-3xl font-medium text-cyan-400 tracking-wide">
-              {t.dashSubtitle}
-            </p>
-            
-            <div className="mt-16 max-w-4xl text-center space-y-6 text-slate-300 text-lg md:text-xl leading-relaxed">
-              <p>
-                Toda la circuitería, el código de bajo nivel y los servidores convergen finalmente aquí: en la interfaz de usuario.
-              </p>
-              <p>
-                Desarrollamos un dashboard web utilizando HTML5, CSS y librerías de visualización en JavaScript. Mediante WebSockets, el administrador no necesita estar refrescando la página; puede ver el comportamiento de sus redes de agua en tiempo real.
-              </p>
-              <div className="p-6 mt-8 rounded-2xl bg-cyan-950/30 border border-cyan-500/20 text-cyan-100">
-                <p>
-                  <strong>Resultados del prototipo:</strong> Durante nuestras pruebas, logramos transmitir exitosamente tramas desde una locación remota hasta nuestro servidor local, demostrando una latencia mínima y validando que el concepto funciona en el mundo real.
-                </p>
-              </div>
-            </div>
-            
-            <div className="absolute bottom-12 text-slate-500 text-sm animate-pulse">
-              Presiona ➔ para ver el dashboard
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Actual Dashboard UI */}
       <motion.div 
         className="flex-1 flex flex-col w-full h-full p-4 md:p-8 z-10"
         initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: step === 1 ? 1 : 0.3, scale: step === 1 ? 1 : 0.95, filter: step === 1 ? 'none' : 'blur(4px)' }}
+        animate={{ opacity: 1, scale: 1, filter: 'none' }}
         transition={{ duration: 0.8 }}
       >
         {/* Header */}
