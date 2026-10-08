@@ -46,7 +46,15 @@ export const translations = {
     eventLog: "Registro de Eventos",
     ftpLog: "Registro de Transferencias FTP",
     waitingTelemetry: "Esperando telemetría...",
-    waitingActivity: "Esperando actividad FTP..."
+    waitingActivity: "Esperando actividad FTP...",
+    compliance: "Cumplimiento",
+    complianceDesc1: "Totalmente alineado con la normativa ",
+    complianceDesc2: " para la medición de volúmenes de aguas nacionales usadas, explotadas o aprovechadas.",
+    waterEfficiency: "Eficiencia Hídrica",
+    waterEfficiencyDesc: "Detección de anomalías en tiempo real para prevenir fugas masivas, optimizando el uso del recurso y reduciendo costos operativos.",
+    scalability: "Escalabilidad",
+    scalabilityDesc: "Diseño modular que permite desplegar miles de nodos sensores a lo largo de redes de distribución interconectadas en la nube.",
+    thanks: "Gracias por su atención."
   },
   EN: {
     title: "SITAR",
@@ -95,7 +103,15 @@ export const translations = {
     eventLog: "Event Log",
     ftpLog: "FTP Transfers Log",
     waitingTelemetry: "Waiting for telemetry...",
-    waitingActivity: "Waiting for FTP activity..."
+    waitingActivity: "Waiting for FTP activity...",
+    compliance: "Compliance",
+    complianceDesc1: "Fully aligned with the ",
+    complianceDesc2: " standard for the measurement of used, exploited or harnessed national water volumes.",
+    waterEfficiency: "Water Efficiency",
+    waterEfficiencyDesc: "Real-time anomaly detection to prevent massive leaks, optimizing resource usage and reducing operating costs.",
+    scalability: "Scalability",
+    scalabilityDesc: "Modular design allowing the deployment of thousands of sensor nodes across cloud-interconnected distribution networks.",
+    thanks: "Thank you for your attention."
   },
   PL: {
     title: "SITAR",
@@ -144,7 +160,15 @@ export const translations = {
     eventLog: "Dziennik Zdarzeń",
     ftpLog: "Dziennik Transferów FTP",
     waitingTelemetry: "Oczekiwanie na telemetrię...",
-    waitingActivity: "Oczekiwanie na aktywność FTP..."
+    waitingActivity: "Oczekiwanie na aktywność FTP...",
+    compliance: "Zgodność",
+    complianceDesc1: "W pełni zgodny z normą ",
+    complianceDesc2: " dotyczącą pomiaru objętości wód krajowych zużytych, eksploatowanych lub wykorzystywanych.",
+    waterEfficiency: "Wydajność Wodna",
+    waterEfficiencyDesc: "Wykrywanie anomalii w czasie rzeczywistym, aby zapobiegać masowym wyciekom, optymalizując zużycie zasobów i zmniejszając koszty operacyjne.",
+    scalability: "Skalowalność",
+    scalabilityDesc: "Modułowa konstrukcja pozwalająca na wdrożenie tysięcy węzłów czujników w sieciach dystrybucyjnych połączonych z chmurą.",
+    thanks: "Dziękuję za uwagę."
   },
   SK: {
     title: "SITAR",
@@ -193,7 +217,15 @@ export const translations = {
     eventLog: "Denník Udalostí",
     ftpLog: "Záznam FTP Transferov",
     waitingTelemetry: "Čaká sa na telemetriu...",
-    waitingActivity: "Čaká sa na FTP aktivitu..."
+    waitingActivity: "Čaká sa na FTP aktivitu...",
+    compliance: "Súlad",
+    complianceDesc1: "Plne v súlade s normou ",
+    complianceDesc2: " pre meranie objemov národných vôd použitých, vyťažených alebo využitých.",
+    waterEfficiency: "Efektivita Vody",
+    waterEfficiencyDesc: "Detekcia anomálií v reálnom čase na zabránenie masívnym únikom, optimalizácia využívania zdrojov a zníženie prevádzkových nákladov.",
+    scalability: "Škálovateľnosť",
+    scalabilityDesc: "Modulárny dizajn umožňujúci nasadenie tisícov senzorových uzlov cez distribučné siete prepojené s cloudom.",
+    thanks: "Ďakujem za pozornosť."
   }
 };
 
