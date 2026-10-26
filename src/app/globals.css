@@ -35,3 +35,12 @@ body {
     font-size: clamp(8px, min(calc((100vh - 314px) / 46.8), calc((50vw - 84px) / 43)), 17px);
   }
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
