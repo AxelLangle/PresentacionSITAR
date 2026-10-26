@@ -12,14 +12,23 @@ class NextJsStaticRouteHandler(http.server.SimpleHTTPRequestHandler):
         super().__init__(*args, directory=DIRECTORY, **kwargs)
 
     # Sobrescribimos do_GET para manejar las "rutas limpias" de Next.js
-    # Ej: si alguien entra a /acerca, le servimos /acerca.html internamente
+    # Ej: si alguien entra a /mobile o /mobile/, servimos su HTML en lugar de listar el directorio
     def do_GET(self):
-        path = self.translate_path(self.path)
-        # Si el archivo exacto no existe y la ruta no tiene extensión...
-        if not os.path.exists(path) and not self.path.endswith('/'):
-            # Verificamos si existe el equivalente con .html
-            if os.path.exists(path + '.html'):
-                self.path += '.html'
+        url_parts = self.path.split('?', 1)
+        clean_url = url_parts[0]
+        query = ('?' + url_parts[1]) if len(url_parts) > 1 else ''
+
+        fs_path = self.translate_path(clean_url)
+        fs_path_no_slash = fs_path.rstrip('/\\')
+
+        if os.path.isdir(fs_path):
+            index_file = os.path.join(fs_path, 'index.html')
+            if not os.path.exists(index_file) and os.path.exists(fs_path_no_slash + '.html'):
+                self.path = clean_url.rstrip('/') + '.html' + query
+        elif not os.path.exists(fs_path) and not clean_url.endswith('/'):
+            if os.path.exists(fs_path_no_slash + '.html'):
+                self.path = clean_url + '.html' + query
+
         return super().do_GET()
 
 if __name__ == "__main__":
