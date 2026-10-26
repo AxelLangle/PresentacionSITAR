@@ -27,10 +27,21 @@ class NextJsStaticRouteHandler(http.server.SimpleHTTPRequestHandler):
         pass # Evitar crash por sys.stderr en modo windowed
 
     def do_GET(self):
-        path = self.translate_path(self.path)
-        if not os.path.exists(path) and not self.path.endswith('/'):
-            if os.path.exists(path + '.html'):
-                self.path += '.html'
+        url_parts = self.path.split('?', 1)
+        clean_url = url_parts[0]
+        query = ('?' + url_parts[1]) if len(url_parts) > 1 else ''
+
+        fs_path = self.translate_path(clean_url)
+        fs_path_no_slash = fs_path.rstrip('/\\')
+
+        if os.path.isdir(fs_path):
+            index_file = os.path.join(fs_path, 'index.html')
+            if not os.path.exists(index_file) and os.path.exists(fs_path_no_slash + '.html'):
+                self.path = clean_url.rstrip('/') + '.html' + query
+        elif not os.path.exists(fs_path) and not clean_url.endswith('/'):
+            if os.path.exists(fs_path_no_slash + '.html'):
+                self.path = clean_url + '.html' + query
+
         return super().do_GET()
 
 def start_server():
