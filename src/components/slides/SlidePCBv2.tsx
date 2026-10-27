@@ -1,40 +1,12 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { HardDrive, Database, ShieldCheck, Cpu, Upload } from 'lucide-react';
-
-const CANDIDATE_VIDEOS = [
-  '/carousel/PCB_v2.mp4',
-  '/carousel/PCB_v2.mkv',
-  '/carousel/PCB_v2.webm',
-  '/carousel/Animacion_v2.mp4',
-  '/carousel/Animacion_v2.mkv',
-  '/carousel/Animacion.mkv',
-];
+import { HardDrive, Database, ShieldCheck, Cpu } from 'lucide-react';
 
 export default function SlidePCBv2() {
   const { t } = useLanguage();
-  const [sourceIdx, setSourceIdx] = useState(0);
-  const [customVideoUrl, setCustomVideoUrl] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const activeSrc = customVideoUrl ?? CANDIDATE_VIDEOS[sourceIdx];
-  const isFallbackVideo = !customVideoUrl && sourceIdx === CANDIDATE_VIDEOS.length - 1;
-
-  const handleVideoError = () => {
-    if (!customVideoUrl && sourceIdx < CANDIDATE_VIDEOS.length - 1) {
-      setSourceIdx((prev) => prev + 1);
-    }
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const url = URL.createObjectURL(file);
-    setCustomVideoUrl(url);
-  };
 
   const cards = [
     {
@@ -111,9 +83,7 @@ export default function SlidePCBv2() {
         <div className="relative h-full max-h-[46vh] md:max-h-[54vh] w-full max-w-5xl flex items-center justify-center">
           <div className="relative h-full w-full flex items-center justify-center rounded-2xl overflow-hidden bg-slate-950/80 border border-cyan-500/25 shadow-[0_0_50px_rgba(6,182,212,0.12)]">
             <video
-              key={activeSrc}
-              src={activeSrc}
-              onError={handleVideoError}
+              src="/carousel/pcb_v2.0.mp4"
               autoPlay
               loop
               muted
@@ -126,30 +96,6 @@ export default function SlidePCBv2() {
               <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
               <span>KiCad 3D · PCB v2.0 + MicroSD</span>
             </div>
-
-            {/* Botón discreto para cargar video local o aviso si aún no se copia PCB_v2.mp4 / .mkv */}
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="video/*"
-              onChange={handleFileChange}
-              className="hidden"
-            />
-            {isFallbackVideo && (
-              <div className="absolute bottom-3 right-3 flex items-center gap-2 bg-slate-950/85 backdrop-blur-md border border-amber-500/30 rounded-xl px-3 py-1.5 text-[11px] text-slate-300">
-                <span className="hidden sm:inline text-amber-300/90 font-mono">
-                  /carousel/PCB_v2.mp4 (.mkv)
-                </span>
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-200 font-medium transition-colors cursor-pointer"
-                >
-                  <Upload className="w-3 h-3" />
-                  <span>{t.pcbV2SelectVideo}</span>
-                </button>
-              </div>
-            )}
           </div>
         </div>
       </motion.div>
