@@ -307,7 +307,7 @@ export default function MobileCommitteeView() {
     setCurrentTime(0);
   }, [playingSection, playingLang, currentPartIndex, fullGuideMode, catalog, startPlayback]);
 
-  //Alternar reproducción de una sección individual
+  // Alternar reproducción de una sección individual
   const toggleSectionAudio = (sectionId: SectionId, lang: Language) => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -325,6 +325,39 @@ export default function MobileCommitteeView() {
     startPlayback(sectionId, lang, 0, false);
   };
 
+  // Cambiar idioma sincronizando la pista de audio activa (tanto en reproducción como en pausa)
+  const handleLanguageChange = useCallback(
+    (newLang: Language) => {
+      setLanguage(newLang);
+
+      if (!playingSection) return;
+
+      const audio = audioRef.current;
+      const directTracks = catalog[playingSection]?.[newLang] ?? [];
+      const fallbackTracks = catalog[playingSection]?.ES ?? [];
+      const targetLang: Language = directTracks.length > 0 ? newLang : 'ES';
+      const targetTracks = directTracks.length > 0 ? directTracks : fallbackTracks;
+
+      if (!targetTracks.length || playingLang === targetLang) return;
+
+      const nextPartIdx = 0;
+
+      if (isPlaying) {
+        startPlayback(playingSection, targetLang, nextPartIdx, fullGuideMode);
+      } else if (audio) {
+        audio.pause();
+        audio.src = targetTracks[nextPartIdx];
+        audio.playbackRate = playbackRate;
+        audio.load();
+        setPlayingLang(targetLang);
+        setCurrentPartIndex(nextPartIdx);
+        setCurrentTime(0);
+        setDuration(0);
+      }
+    },
+    [playingSection, catalog, playingLang, isPlaying, startPlayback, fullGuideMode, playbackRate]
+  );
+
   // Alternar modo "Escuchar Presentación Completa"
   const toggleFullGuide = () => {
     const audio = audioRef.current;
@@ -337,6 +370,11 @@ export default function MobileCommitteeView() {
     }
 
     if (fullGuideMode && !isPlaying && playingSection) {
+      const desiredLang: Language = (catalog[playingSection]?.[language]?.length ?? 0) > 0 ? language : 'ES';
+      if (playingLang !== desiredLang) {
+        startPlayback(playingSection, desiredLang, 0, true);
+        return;
+      }
       audio.play().then(() => setIsPlaying(true)).catch(() => {});
       return;
     }
@@ -352,7 +390,7 @@ export default function MobileCommitteeView() {
   // Saltar a sección anterior/siguiente desde el reproductor flotante
   const skipSection = (dir: -1 | 1) => {
     const currentSec = playingSection ?? activeSection;
-    const langToUse = playingSection ? playingLang : (catalog[currentSec]?.[language]?.length ? language : 'ES');
+    const langToUse: Language = (catalog[currentSec]?.[language]?.length ?? 0) > 0 ? language : 'ES';
     const idx = SECTION_IDS.indexOf(currentSec);
 
     let i = idx + dir;
@@ -573,7 +611,7 @@ export default function MobileCommitteeView() {
                 return (
                   <button
                     key={langObj.code}
-                    onClick={() => setLanguage(langObj.code)}
+                    onClick={() => handleLanguageChange(langObj.code)}
                     className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all ${
                       active
                         ? 'bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 shadow'
@@ -1439,7 +1477,9 @@ export default function MobileCommitteeView() {
               <button
                 onClick={() => {
                   if (playingSection) {
-                    toggleSectionAudio(playingSection, playingLang);
+                    const desiredLang: Language =
+                      (catalog[playingSection]?.[language]?.length ?? 0) > 0 ? language : 'ES';
+                    toggleSectionAudio(playingSection, desiredLang);
                   } else {
                     toggleFullGuide();
                   }
