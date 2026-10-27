@@ -12,8 +12,10 @@ import Slide4 from './slides/Slide4';
 import Slide5 from './slides/Slide5';
 import Slide6 from './slides/Slide6';
 import Slide7 from './slides/Slide7';
+import SlidePCBv2 from './slides/SlidePCBv2';
 import Slide8 from './slides/Slide8';
 import Slide9 from './slides/Slide9';
+import SlideQR from './slides/SlideQR';
 
 const SlidePlaceholder = ({ index, titleKey }: { index: number; titleKey: 'problem' | 'concept' | 'firmware' | 'cloud' | 'impact' | 'closing' }) => {
   const { t } = useLanguage();
@@ -25,15 +27,18 @@ const SlidePlaceholder = ({ index, titleKey }: { index: number; titleKey: 'probl
 };
 
 const slides = [
-  { id: 0, component: <Slide1 /> },
-  { id: 1, component: <Slide2 /> },
-  { id: 2, component: <Slide3 /> },
-  { id: 3, component: <Slide4 /> },
-  { id: 4, component: <Slide5 /> },
-  { id: 5, component: <Slide6 /> },
-  { id: 6, component: <Slide7 /> },
-  { id: 7, component: <Slide8 /> },
-  { id: 8, component: <Slide9 /> },
+  { id: 0, component: <SlideQR variant="intro" /> },
+  { id: 1, component: <Slide1 /> },
+  { id: 2, component: <Slide2 /> },
+  { id: 3, component: <Slide3 /> },
+  { id: 4, component: <Slide4 /> },
+  { id: 5, component: <Slide5 /> },
+  { id: 6, component: <Slide6 /> },
+  { id: 7, component: <Slide7 /> },
+  { id: 8, component: <SlidePCBv2 /> },
+  { id: 9, component: <Slide8 /> },
+  { id: 10, component: <Slide9 /> },
+  { id: 11, component: <SlideQR variant="outro" /> },
 ];
 
 // Umbrales del gesto de deslizar (swipe) en pantallas táctiles
